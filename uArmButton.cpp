@@ -13,32 +13,41 @@
 
 uArmButton::uArmButton()
 {
+#ifndef XKNMC
 	mPin = 0xff;
 	mState = INIT;
 	mEvent = EVENT_NONE;
+#endif
 }
 
 void uArmButton::setPin(unsigned char pin)
 {
+#ifndef XKNMC
 	mPin = pin;
 	mState = IDLE;
+#endif
 }
 
 bool uArmButton::clicked()
 {
+#ifndef XKNMC
 	return (mEvent == EVENT_CLICK);
+#endif
 }
 
 bool uArmButton::longPressed()
 {
+#ifndef XKNMC
 	return (mEvent == EVENT_LONG_PRESS);
+#endif
 }
 
 bool uArmButton::isPressed()
 {
+#ifndef XKNMC
 	if (!digitalRead(mPin))
 		return true;
-
+#endif
 	return false;
 }
 
@@ -103,5 +112,4 @@ void uArmButton::tick()
 		break;
 	}
 #endif //XKNMC
-
 }

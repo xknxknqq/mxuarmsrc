@@ -175,7 +175,7 @@ void uArmClass::recorderTick()
 void uArmClass::systemRun()
 {
 //check the button4 status------------------------------------------------------------------------
-
+#ifndef XKNMC
     if (mButtonD4.clicked())
     {
     	//debugPrint("btnD4 down");
@@ -268,7 +268,7 @@ void uArmClass::systemRun()
         }
 
     }
-
+#endif //XKNMC
 }
 
 void uArmClass::btDetect()
@@ -297,9 +297,11 @@ void uArmClass::btDetect()
 
 void uArmClass::tickTaskRun()
 {
+#ifndef XKNMC
     //recorderTick();
     mButtonD7.tick();
     mButtonD4.tick();
+#endif
 #ifdef MKII
     mLed.tick();
     btDetect();

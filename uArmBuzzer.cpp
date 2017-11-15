@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file	uArmBuzzer.cpp
-  * @author	David.Long	
+  * @author	David.Long
   * @email	xiaokun.long@ufactory.cc
   * @date	2016-09-30
   * @license GNU
@@ -9,7 +9,7 @@
   ******************************************************************************
   */
 
-#include "uArmBuzzer.h" 
+#include "uArmBuzzer.h"
 
 uArmBuzzer gBuzzer;
 
@@ -27,6 +27,7 @@ void uArmBuzzer::setPin(unsigned char pin)
 
 void uArmBuzzer::buzz(unsigned int frequency, unsigned long duration)
 {
+#ifndef XKNMC
 	if (duration <= 0)
 		return;
 
@@ -36,23 +37,27 @@ void uArmBuzzer::buzz(unsigned int frequency, unsigned long duration)
   mStartTime = millis();
   tone(mPin, frequency, duration);
 	//tone(mPin, frequency, duration);
+#endif //XKNMC
 
 }
 
 
 void uArmBuzzer::stop()
 {
-	noTone(mPin);	
+	noTone(mPin);
 }
 
 
 void uArmBuzzer::run()
 {
+#ifndef XKNMC
+
   if (mOn && (long)((millis() - mStartTime)) >= mDuration)
   {
-    noTone(mPin); 
+    noTone(mPin);
     mOn = false;
   }
+#endif
 }
 
 bool uArmBuzzer::on()
