@@ -13,6 +13,8 @@
 
 #include "uArmComm.h"
 
+//#define XKNMC
+
 uArmClass uArm;
 extern uArmComm gComm;
 
@@ -65,10 +67,12 @@ void uArmClass::setup()
 	initHardware();
 	mController.init();
 
+#ifndef XKNMC
     mButtonD4.setPin(BTN_D4);
     mButtonD7.setPin(BTN_D7);
 
     gBuzzer.setPin(BUZZER);
+#endif
 
     #ifdef MKII
     mLed.setPin(SYS_LED);
@@ -436,8 +440,8 @@ bool uArmClass::record()
 
 void uArmClass::interpolate(double startVal, double endVal, double *interpVals, int steps, byte easeType)
 {
+#ifndef XKNMC
 
-    startVal = startVal / 10.0;
     endVal = endVal / 10.0;
 
     double delta = endVal - startVal;
@@ -447,11 +451,14 @@ void uArmClass::interpolate(double startVal, double endVal, double *interpVals, 
         //*(interp_vals+f) = 10.0*(start_val + (3 * delta) * (t * t) + (-2 * delta) * (t * t * t));
         *(interpVals + i - 1) = 10.0 * (startVal + t * t * delta * (3 + (-2) * t));
     }
+#endif
+
 }
 
 unsigned char uArmClass::moveTo(double x, double y, double z, double speed)
 {
 
+#ifndef XKNMC
 	double angleRot = 0, angleLeft = 0, angleRight = 0;
 	double curRot = 0, curLeft = 0, curRight = 0;
     double targetRot = 0;
@@ -573,6 +580,8 @@ unsigned char uArmClass::moveTo(double x, double y, double z, double speed)
     mCurStep = 0;
     mStartTime = millis();
 
+#endif
+
     return IN_RANGE;
 }
 
@@ -596,7 +605,7 @@ void uArmClass::interpolateEven(double startVal, double endVal, double *interpVa
 unsigned char uArmClass::moveToAngle(double targetRot, double targetLeft, double targetRight)
 {
 
-
+#ifndef XKNMC
     double angleRot = 0, angleLeft = 0, angleRight = 0;
     double curRot = 0, curLeft = 0, curRight = 0;
     double x = 0;
@@ -711,6 +720,7 @@ unsigned char uArmClass::moveToAngle(double targetRot, double targetLeft, double
     mTotalSteps = totalSteps;
     mCurStep = 0;
     mStartTime = millis();
+#endif
 
     return IN_RANGE;
 }

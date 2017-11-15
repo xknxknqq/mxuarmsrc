@@ -10,7 +10,7 @@
   */
 
 #include "uArmComm.h"
-#define XKNMC
+//#define XKNMC
 
 uArmComm gComm;
 
@@ -150,7 +150,7 @@ unsigned char uArmComm::cmdMovePol(int serialNum, int parameterCount, double val
 
 unsigned char uArmComm::cmdSetAttachServo(int serialNum, int parameterCount, double value[4])
 {
-#ifndef XKNMMC
+#ifndef XKNMC
 
     if (parameterCount != 1)
         return PARAMETER_ERROR;
@@ -163,7 +163,7 @@ unsigned char uArmComm::cmdSetAttachServo(int serialNum, int parameterCount, dou
 
 unsigned char uArmComm::cmdSetDetachServo(int serialNum, int parameterCount, double value[4])
 {
-#ifndef XKNMMC
+#ifndef XKNMC
 
     if (parameterCount != 1)
         return PARAMETER_ERROR;
@@ -176,7 +176,7 @@ unsigned char uArmComm::cmdSetDetachServo(int serialNum, int parameterCount, dou
 
 unsigned char uArmComm::cmdSetServoAngle(int serialNum, int parameterCount, double value[4])
 {
-#ifndef XKNMMC
+#ifndef XKNMC
 
     if (parameterCount != 2)
         return PARAMETER_ERROR;
