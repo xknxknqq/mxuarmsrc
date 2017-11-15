@@ -1,13 +1,13 @@
 /**
   ******************************************************************************
   * @file	uArmIIC.cpp
-  * @author	David.Long	
+  * @author	David.Long
   * @email	xiaokun.long@ufactory.cc
   * @date	2016-10-18
   ******************************************************************************
   */
 
-#include "uArmIIC.h" 
+#include "uArmIIC.h"
 void delay_us()
 {
 
@@ -16,6 +16,7 @@ void delay_us()
 
 void iic_start()
 {
+#ifndef XKNMC
         SCL_SET;//  SCL=1
         delay_us();
         SDA_SET;//  SDA=1
@@ -24,10 +25,15 @@ void iic_start()
         delay_us();
         SCL_CLEAR;//  SCL=0
         delay_us();
+#endif //XKNMC
 }
+
+#ifndef XKNMC
+#endif //XKNMC
 
 void iic_stop()
 {
+  #ifndef XKNMC
         SCL_CLEAR;//  SCL=0
         delay_us();
         SDA_CLEAR;//  SDA=0
@@ -36,12 +42,14 @@ void iic_stop()
         delay_us();
         SDA_SET;//  SDA=1
         delay_us();
+#endif //XKNMC
 }
 
 //return 0:ACK=0
 //return 1:NACK=1
 unsigned char read_ack()
 {
+#ifndef XKNMC
         unsigned char old_state;
         old_state = PORT_DDR;
         SDA_INPUT;//SDA INPUT
@@ -60,12 +68,15 @@ unsigned char read_ack()
                 PORT_DDR = old_state;
                 return 0;
         }
+#endif //XKNMC
 }
 
 //ack=0:send ack
 //ack=1:do not send ack
 void send_ack()
 {
+  #ifndef XKNMC
+
         unsigned char old_state;
         old_state = PORT_DDR;
         SDA_OUTPUT;//SDA OUTPUT
@@ -78,10 +89,14 @@ void send_ack()
         PORT_DDR = old_state;
         SDA_SET;//  SDA=1
         delay_us();
+  #endif //XKNMC
+
 }
 
 void iic_sendbyte(unsigned char dat)
 {
+  #ifndef XKNMC
+
         unsigned char i;
         for(i = 0; i < 8; i++)
         {
@@ -95,10 +110,14 @@ void iic_sendbyte(unsigned char dat)
                 delay_us();
                 SCL_CLEAR;//  SCL=0
         }
+#endif //XKNMC
+
 }
 
 unsigned char iic_receivebyte()
 {
+  #ifndef XKNMC
+
         unsigned char i,byte = 0;
         unsigned char old_state;
         old_state = PORT_DDR;
@@ -116,10 +135,13 @@ unsigned char iic_receivebyte()
                 delay_us();
         }
         return byte;
+#endif //XKNMC
 }
 
 unsigned char iic_writebuf(unsigned char *buf,unsigned char device_addr,unsigned int addr,unsigned char len)
 {
+  #ifndef XKNMC
+
         SCL_OUTPUT;
         SDA_OUTPUT;
         SCL_SET;
@@ -144,15 +166,17 @@ unsigned char iic_writebuf(unsigned char *buf,unsigned char device_addr,unsigned
         iic_stop();
 
         return 0;
+#endif //XKNMC
 }
 
 unsigned char iic_readbuf(unsigned char *buf,unsigned char device_addr,unsigned int addr,unsigned char len)
 {
+  #ifndef XKNMC
         SCL_OUTPUT;
         SDA_OUTPUT;
         SCL_SET;
         SDA_SET;
-        
+
         unsigned char length_of_data=0;
         length_of_data = len;
         iic_start();
@@ -177,4 +201,5 @@ unsigned char iic_readbuf(unsigned char *buf,unsigned char device_addr,unsigned 
         }
         iic_stop();
         return 0;
+#endif //XKNMC
 }

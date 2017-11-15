@@ -1,13 +1,13 @@
 /**
   ******************************************************************************
   * @file	uArmButton.cpp
-  * @author	David.Long	
+  * @author	David.Long
   * @email	xiaokun.long@ufactory.cc
   * @date	2016-10-17
   ******************************************************************************
   */
 
-#include "uArmButton.h" 
+#include "uArmButton.h"
 
 
 
@@ -49,6 +49,7 @@ void uArmButton::clearEvent()
 
 void uArmButton::tick()
 {
+#ifndef XKNMC
 	switch (mState)
 	{
 	case IDLE:
@@ -68,7 +69,7 @@ void uArmButton::tick()
 		else
 		{
 			mState = IDLE;
-		}	
+		}
 		break;
 
 	case PRESSED:
@@ -80,7 +81,7 @@ void uArmButton::tick()
 		else
 		{
 			mState = RELEASE;
-		}		
+		}
 		break;
 
 	case RELEASE:
@@ -100,6 +101,6 @@ void uArmButton::tick()
 
 	default:
 		break;
-
+#endif //XKNMC
 	}
 }

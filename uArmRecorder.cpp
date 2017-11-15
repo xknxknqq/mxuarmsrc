@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file	uArmRecorder.cpp
-  * @author	David.Long	
+  * @author	David.Long
   * @email	xiaokun.long@ufactory.cc
   * @date	2016-09-30
   * @license GNU
@@ -9,17 +9,18 @@
   ******************************************************************************
   */
 
-#include "uArmRecorder.h" 
+#include "uArmRecorder.h"
 
 uArmRecorder gRecorder;
 
 uArmRecorder::uArmRecorder()
 {
-	
+
 }
 
 void uArmRecorder::write(unsigned int addr, unsigned char data[], int num)
 {
+#ifndef XKNMC
     unsigned char i=0;
     i = (addr % 128);
     // Since the eeprom's sector is 128 byte, if we want to write 5 bytes per cycle we need to care about when there's less than 5 bytes left
@@ -35,10 +36,12 @@ void uArmRecorder::write(unsigned int addr, unsigned char data[], int num)
     {
         iic_writebuf(data, EXTERNAL_EEPROM_USER_ADDRESS, addr, num);// write data
     }
+#endif //XKNMC
 }
 
 void uArmRecorder::read(unsigned int addr, unsigned char data[], int num)
 {
+#ifndef XKNMC
     unsigned char i=0;
     i= (addr % 128);
     // Since the eeprom's sector is 128 byte, if we want to write 5 bytes per cycle we need to care about when there's less than 5 bytes left
@@ -54,6 +57,5 @@ void uArmRecorder::read(unsigned int addr, unsigned char data[], int num)
     {
         iic_readbuf(data, EXTERNAL_EEPROM_USER_ADDRESS, addr, num);// write data
     }
+#endif //XKNMC
 }
-
-
