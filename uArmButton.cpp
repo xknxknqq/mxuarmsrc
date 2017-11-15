@@ -101,6 +101,7 @@ void uArmButton::tick()
 
 	default:
 		break;
-#endif //XKNMC
 	}
+#endif //XKNMC
+
 }
