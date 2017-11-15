@@ -8,6 +8,9 @@
   */
 
 #include "uArmIIC.h"
+#define XKNMC
+
+
 void delay_us()
 {
 

@@ -9,6 +9,8 @@
 
 #include "uArmLed.h"
 
+#define XKNMC
+
 uArmLed::uArmLed()
 {
 #ifndef XKNMC
@@ -48,7 +50,7 @@ void uArmLed::blink()
 
 void uArmLed::tickInc()
 {
-#ifndef XKNMC	
+#ifndef XKNMC
 	mTicks++;
 
 	if (mTicks >= (500/TICK_INTERVAL))

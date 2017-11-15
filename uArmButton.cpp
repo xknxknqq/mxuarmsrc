@@ -8,8 +8,7 @@
   */
 
 #include "uArmButton.h"
-
-
+#define XKNMC
 
 uArmButton::uArmButton()
 {

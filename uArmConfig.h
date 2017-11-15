@@ -17,7 +17,6 @@
 int ardprintf(char *result, char *str, ...);
 // #define MKII
 #define METAL
-#define XKNMC
 //#define DEBUG
 
 

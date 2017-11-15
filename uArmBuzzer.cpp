@@ -11,6 +11,8 @@
 
 #include "uArmBuzzer.h"
 
+#define XKNMC
+
 uArmBuzzer gBuzzer;
 
 

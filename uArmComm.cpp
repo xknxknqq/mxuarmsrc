@@ -10,6 +10,7 @@
   */
 
 #include "uArmComm.h"
+#define XKNMC
 
 uArmComm gComm;
 
@@ -149,53 +150,60 @@ unsigned char uArmComm::cmdMovePol(int serialNum, int parameterCount, double val
 
 unsigned char uArmComm::cmdSetAttachServo(int serialNum, int parameterCount, double value[4])
 {
+#ifndef XKNMMC
 
     if (parameterCount != 1)
         return PARAMETER_ERROR;
 
 	uArm.mController.attachServo(value[0]);
-
+#endif
     replyOK(serialNum);
     return 0;
 }
 
 unsigned char uArmComm::cmdSetDetachServo(int serialNum, int parameterCount, double value[4])
 {
+#ifndef XKNMMC
+
     if (parameterCount != 1)
         return PARAMETER_ERROR;
 
 	uArm.mController.detachServo(value[0]);
+#endif
     replyOK(serialNum);
-
     return 0;
 }
 
 unsigned char uArmComm::cmdSetServoAngle(int serialNum, int parameterCount, double value[4])
 {
+#ifndef XKNMMC
+
     if (parameterCount != 2)
         return PARAMETER_ERROR;
 
 	uArm.mController.writeServoAngle(byte(value[0]), value[1], false);
-    replyOK(serialNum);
 
+#endif
+    replyOK(serialNum);
     return 0;
 }
 
 unsigned char uArmComm::cmdSetServoAngleWithOffset(int serialNum, int parameterCount, double value[4])
 {
-
+#ifndef XKNMC
     if (parameterCount != 2)
         return PARAMETER_ERROR;
 
 	uArm.mController.writeServoAngle(byte(value[0]), value[1], true);
+#endif
     replyOK(serialNum);
-
     return 0;
 
 }
 
 unsigned char uArmComm::cmdSetPump(int serialNum, int parameterCount, double value[4])
 {
+#ifndef XKNMC
     if (parameterCount != 1)
         return PARAMETER_ERROR;
 
@@ -207,6 +215,7 @@ unsigned char uArmComm::cmdSetPump(int serialNum, int parameterCount, double val
     {
         uArm.mController.pumpOn();
     }
+#endif
 
     replyOK(serialNum);
 
@@ -215,6 +224,7 @@ unsigned char uArmComm::cmdSetPump(int serialNum, int parameterCount, double val
 
 unsigned char uArmComm::cmdSetGripper(int serialNum, int parameterCount, double value[4])
 {
+#ifndef XKNMC
 
     if (parameterCount != 1)
         return PARAMETER_ERROR;
@@ -227,7 +237,7 @@ unsigned char uArmComm::cmdSetGripper(int serialNum, int parameterCount, double 
     {
         uArm.mController.gripperCatch();
     }
-
+#endif
     replyOK(serialNum);
 
     return 0;
@@ -235,24 +245,27 @@ unsigned char uArmComm::cmdSetGripper(int serialNum, int parameterCount, double 
 
 unsigned char uArmComm::cmdSetBuzz(int serialNum, int parameterCount, double value[4])
 {
+#ifndef XKNMC
     if (parameterCount != 2)
         return PARAMETER_ERROR;
 
 	gBuzzer.buzz(value[0], value[1]*1000);    // convert to ms
 
+#endif
     replyOK(serialNum);
-
     return 0;
 }
 
 unsigned char uArmComm::cmdStopMove(int serialNum, int parameterCount, double value[4])
 {
+#ifndef XKNMC
     if (parameterCount != 0)
         return PARAMETER_ERROR;
 
-	uArm.stopMove();
-    replyOK(serialNum);
+  	uArm.stopMove();
+#endif
 
+    replyOK(serialNum);
     return 0;
 }
 
@@ -264,9 +277,7 @@ unsigned char uArmComm::cmdGetHWVersion(int serialNum, int parameterCount, doubl
     char result[128];
 
     ardprintf(result, "V%s", HW_VER);
-
-
-	replyResult(serialNum, result);
+  	replyResult(serialNum, result);
 
     return 0;
 }
@@ -279,8 +290,6 @@ unsigned char uArmComm::cmdGetSWVersion(int serialNum, int parameterCount, doubl
     char result[128];
 
     ardprintf(result, "V%s", SW_VER);
-
-
     replyResult(serialNum, result);
 
     return 0;
@@ -288,8 +297,8 @@ unsigned char uArmComm::cmdGetSWVersion(int serialNum, int parameterCount, doubl
 
 unsigned char uArmComm::cmdSimulatePos(int serialNum, int parameterCount, double value[4])
 {
-#ifndef XKNMC
 
+#ifndef XKNMC
 	double angleRot, angleLeft, angleRight;
 
     if (parameterCount != 4)
@@ -306,8 +315,8 @@ unsigned char uArmComm::cmdSimulatePos(int serialNum, int parameterCount, double
 
 	unsigned char status = uArm.mController.coordianteToAngle(value[0], value[1], value[2], angleRot, angleLeft, angleRight, false);
 
+  char result[128];
 
-    char result[128];
     switch(status)
     {
     case IN_RANGE:
@@ -323,16 +332,14 @@ unsigned char uArmComm::cmdSimulatePos(int serialNum, int parameterCount, double
     }
 
     replyResult(serialNum, result);
-
     return 0;
-#endif //XKNMC
+#endif
 
 }
 
 unsigned char uArmComm::cmdGetCurrentXYZ(int serialNum, int parameterCount, double value[4])
 {
     //char letters[3] = {'X','Y','Z'};
-#ifndef XKNMC
     if (parameterCount != 0)
         return PARAMETER_ERROR;
     //debugPrint("cmdGetCurrentXYZ");
@@ -345,13 +352,11 @@ unsigned char uArmComm::cmdGetCurrentXYZ(int serialNum, int parameterCount, doub
 
     replyResult(serialNum, result);
     return 0;
-#endif //XKNMC
 
 }
 
 unsigned char uArmComm::cmdGetCurrentPosPol(int serialNum, int parameterCount, double value[4])
 {
-#ifndef XKNMC
 
 	double angleRot, angleLeft, angleRight;
 	double x, y, z;
@@ -377,13 +382,11 @@ unsigned char uArmComm::cmdGetCurrentPosPol(int serialNum, int parameterCount, d
     replyResult(serialNum, result);
 
     return 0;
-#endif //XKNMC
 }
 
 unsigned char uArmComm::cmdGetCurrentAngle(int serialNum, int parameterCount, double value[4])
 {
     //char letters[4] = {'B','L','R','H'};
-#ifndef XKNMC
     if (parameterCount != 0)
         return PARAMETER_ERROR;
 
@@ -399,7 +402,6 @@ unsigned char uArmComm::cmdGetCurrentAngle(int serialNum, int parameterCount, do
     replyResult(serialNum, result);
 
     return 0;
-#endif //XKNMC
 
 }
 
@@ -535,22 +537,21 @@ unsigned char uArmComm::cmdGetDigitValue(int serialNum, int parameterCount, doub
 
 unsigned char uArmComm::cmdSetDigitValue(int serialNum, int parameterCount, double value[4])
 {
-
+#ifndef XKNMC
     if (parameterCount != 2)
         return PARAMETER_ERROR;
-
     //Serial.println(SS);// successful feedback send it immediately
     // write the digit value
     value[1] == 1 ? digitalWrite(value[0], HIGH) : digitalWrite(value[0], LOW);
-
+#endif
     replyOK(serialNum);
     return 0;
 }
 
 unsigned char uArmComm::cmdGetAnalogValue(int serialNum, int parameterCount, double value[4])
 {
-
-    if (parameterCount != 1)
+#ifndef XKNMC
+  if (parameterCount != 1)
         return PARAMETER_ERROR;
 
     int val = analogRead(value[0]);
@@ -560,6 +561,7 @@ unsigned char uArmComm::cmdGetAnalogValue(int serialNum, int parameterCount, dou
     ardprintf(result, "V%d", val);
 
     replyResult(serialNum, result);
+#endif
     return 0;
 }
 
@@ -693,7 +695,7 @@ unsigned char uArmComm::cmdGetE2PROMData(int serialNum, int parameterCount, doub
     replyResult(serialNum, result);
 
     return 0;
-#endif //XKNMC
+#endif
 }
 
 unsigned char uArmComm::cmdSetE2PROMData(int serialNum, int parameterCount, double value[4])
@@ -802,10 +804,6 @@ unsigned char uArmComm::cmdSetE2PROMData(int serialNum, int parameterCount, doub
         {
             iic_writebuf(FData.data, deviceAddr, addr, num);// write data
         }
-
-
-
-
     }
 
     replyOK(serialNum);

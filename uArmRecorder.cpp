@@ -10,6 +10,7 @@
   */
 
 #include "uArmRecorder.h"
+#define XKNMC
 
 uArmRecorder gRecorder;
 
